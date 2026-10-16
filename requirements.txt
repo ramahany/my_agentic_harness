@@ -1,0 +1,6 @@
+langchain
+openai
+firebase-admin
+python-dotenv
+#UI 
+rich
