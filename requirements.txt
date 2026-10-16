@@ -2,5 +2,6 @@ langchain
 openai
 firebase-admin
 python-dotenv
+typesafe-sdk
 #UI 
 rich
