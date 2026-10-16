@@ -3,14 +3,22 @@ from firebase_admin import credentials, firestore
 from ..DecisionAgent import DecisionAgent
 
 class FirebaseClient:
-    def __init__(self, products:list[str] , service_account_path = None):
+    def __init__(self, service_account_path = None):
         if not service_account_path:
             service_account_path = "./firebase_key.json" 
         cred = credentials.Certificate(service_account_path)
         firebase_admin.initialize_app(cred)
         self.db = firestore.client()
         self.decision_agent = DecisionAgent()
-        self.available_products = products
+        self.available_products = self.get_products_choices()
+
+    
+    def get_products_choices(self) -> list[str]:
+        items =self.db.collection('products').stream()
+        choices = {"no match found": "if no match from other options"}
+        for item in items : 
+            choices[item.id] = item.to_dict()["description"]
+        return choices
 
     def check_match_product(self, item_name): 
         return self.decision_agent.match_label(item_name, self.available_products)
@@ -28,7 +36,7 @@ class FirebaseClient:
         matching_product = self.check_match_product(product_name)
         if matching_product == "no match found": 
             return "no match found after match search"
-        doc = self.db.collection('products').document(product_name.lower()).get()
+        doc = self.db.collection('products').document(matching_product).get()
         if doc.exists:
             return doc.to_dict()
         else:

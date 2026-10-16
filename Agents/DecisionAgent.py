@@ -5,7 +5,7 @@ class DecisionAgent:
     def __init__(self):
         self.client = TypeSafeClient(model="jev-latest")    
 
-    def match_label(self, user_input:str, choices:list[str]): 
+    def match_label(self, user_input:str, choices:dict[str, str]): 
         response_choice = Choice(
             instructions="which is the best match for this product name, if there is no match u must chose 'no match found'",
             criteria=choices

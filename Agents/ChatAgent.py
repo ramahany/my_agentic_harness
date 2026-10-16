@@ -12,9 +12,9 @@ class ChatAgent:
         You are a helpful assistant , you find product details by their names
         you extract the name from the users input and u can use the function provided 'get_product_details' and give the name as a paramter then u can respond with products detail
         """
-    def __init__(self, products:list[str]):
+    def __init__(self):
         self.UI = UI()
-        self.firebase_client = FirebaseClient(products=products)
+        self.firebase_client = FirebaseClient()
         self.client = OpenAI(
                 api_key=os.environ.get("GROQ_API_KEY"),
                 base_url="https://api.groq.com/openai/v1",

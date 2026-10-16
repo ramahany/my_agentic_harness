@@ -27,9 +27,6 @@ class FireStoreManager:
 
             collection.document(name).set(data)
 
-    def get_products_choices(self) -> list[str]:
-        items =self.db.collection('products').stream()
-        return [item.id for item in items] + ["no match found"]
     
 
 
