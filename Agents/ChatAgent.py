@@ -3,15 +3,13 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from Agents.tools.firebase_tools import FirebaseClient
+from data.prompts.assistant_prompts import SYSTEM_PROMPT
 from Agents.tools.schemas.firebase_tools_schemas import tools
 import json
 from terminalUI import UI
 
 class ChatAgent: 
-    SYSTEM_PROMPT = """
-        You are a helpful assistant , you find product details by their names
-        you extract the name from the users input and u can use the function provided 'get_product_details' and give the name as a paramter then u can respond with products detail
-        """
+
     def __init__(self):
         self.UI = UI()
         self.firebase_client = FirebaseClient()
@@ -21,7 +19,7 @@ class ChatAgent:
             )
         self.functions = {"get_product_details": self.firebase_client.get_product_details}
         self.messages = [
-                {"role": "developer", "content": self.SYSTEM_PROMPT}
+                {"role": "developer", "content": SYSTEM_PROMPT}
             ]
 
     def get_response(self):
