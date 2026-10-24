@@ -6,6 +6,7 @@ from Agents.tools.firebase_tools import FirebaseClient
 from data.prompts.assistant_prompts import SYSTEM_PROMPT
 from Agents.tools.schemas.firebase_tools_schemas import tools
 import json
+from helpers.TTS import TTS
 from terminalUI import UI
 
 class ChatAgent: 
@@ -13,6 +14,7 @@ class ChatAgent:
     def __init__(self):
         self.UI = UI()
         self.firebase_client = FirebaseClient()
+        self.model = "openai/gpt-oss-20b"
         self.client = OpenAI(
                 api_key=os.environ.get("GROQ_API_KEY"),
                 base_url="https://api.groq.com/openai/v1",
@@ -21,11 +23,12 @@ class ChatAgent:
         self.messages = [
                 {"role": "developer", "content": SYSTEM_PROMPT}
             ]
+        self.TTS = TTS()
 
     def get_response(self):
         return self.client.responses.create(
                 input=self.messages,
-                model="openai/gpt-oss-20b",
+                model=self.model,
                 tools=tools
             )
     
@@ -62,6 +65,7 @@ class ChatAgent:
                 if item.type == "message": 
                     self.UI._print_assistant_text(item.content[-1].text)
                     self.add_message_with_role(role = "assistant", content = item.content[-1].text)
+                    self.TTS.play_audio_from_text(item.content[-1].text)
                     tool_response = False
     
     

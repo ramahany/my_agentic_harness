@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 firebase_key.json
 .env
+.vscode
 # C extensions
 *.so
 

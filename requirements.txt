@@ -3,5 +3,6 @@ openai
 firebase-admin
 python-dotenv
 typesafe-sdk
+elevenlabs
 #UI 
 rich
